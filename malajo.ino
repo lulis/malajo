@@ -186,7 +186,7 @@ void loop() {
       }
       // se nao, usa apenas agua limpa
       else {
-        troca_estado(4);
+        troca_estado(3);
       }
     }
     break;
@@ -201,7 +201,6 @@ void loop() {
 
   // ML Enchendo Lavagem
   case 3:
-    //~ reavalia_entrada_agua(); // TODO TESTAR
     if ( ! ta_ligada(sv7_sabao) ) {
       if ( esperando_tempo_minimo_entrada()) return;
       desliga(eb_reservatorios);
@@ -211,6 +210,7 @@ void loop() {
       liga(v5_entrada_tratada);
       troca_estado(4);
     }
+    reavalia_entrada_agua();
     break;
 
   // ML Lavando
@@ -219,21 +219,10 @@ void loop() {
       if ( esperando_tempo_minimo_entrada()) return;
       troca_estado(5);
     }
-    // Caso altere nivel da ML e comece re-encher
+    // Caso altere nivel da ML e comece re-encher, reiniciamos
     else if ( ta_ligada(sv7_sabao) ) {
       if ( esperando_tempo_minimo_entrada()) return;
-      if ( ta_ligada(btn_reuso) || ta_ligada(btn_chuva) ) {
-        // usa preferencialmente reuso, se nao, usa chuva
-        if ( ta_ligada(btn_reuso) ) {
-          liga(v1_saida_reuso);
-        } else {
-          liga(v2_saida_chuva);
-        }
-        desliga(v3_descarte_tanque);
-        liga(v5_entrada_tratada);
-        liga(eb_reservatorios);
-        troca_estado(2);
-      }
+      troca_estado(1);
     }
     break;
 
@@ -275,7 +264,6 @@ void loop() {
 
   // ML Enchendo Enxague
   case 8:
-    //~ reavalia_entrada_agua(); // TODO TESTAR
     if ( (eh_pre_enxague && !ta_ligada(sv7_sabao)) ||
       (!eh_pre_enxague && !ta_ligada(sv8_amacia)) ) {
       if ( esperando_tempo_minimo_entrada()) return;
@@ -285,6 +273,7 @@ void loop() {
       liga(v5_entrada_tratada);
       troca_estado(9);
     }
+    reavalia_entrada_agua();
     break;
 
   // ML Enxaguando
@@ -351,12 +340,25 @@ void reinicia_tempo_minimo_entrada(){
     avaliando_entrada = false;
   }
 }
+// Revisa sensores de nivel dos reservatorios, se necessario comuta origem da agua
 void reavalia_entrada_agua(){
+  delay(tempo_espera_estado); // delay minimo para evitar oscilacoes
+  // se esta enchendo com agua de reuso, mas nao pode mais
   if ( ta_ligada(v1_saida_reuso) && !ta_ligada(btn_reuso) ) {
     desliga(v1_saida_reuso);
-    if ( ta_ligada(btn_chuva) ) liga(v2_saida_chuva);
+    // se houver agua da chuva, usamos
+    if ( ta_ligada(btn_chuva) ) {
+      liga(v2_saida_chuva);
+    }
+    // se nao, usamos agua limpa
+    else {
+      desliga(eb_reservatorios);
+      liga(v5_entrada_tratada);
+    }
   }
-  if ( ta_ligada(v2_saida_chuva) && !ta_ligada(btn_chuva) ) {
+  // se esta enchendo com agua da chuva, mas nao pode mais
+  else if ( ta_ligada(v2_saida_chuva) && !ta_ligada(btn_chuva) ) {
+    desliga(eb_reservatorios);
     desliga(v2_saida_chuva);
     liga(v5_entrada_tratada);
   }
@@ -459,10 +461,6 @@ void restaura_saidas() {
   // - Forcamos muda_saida pra garantir volta ao estado previamente salvo
   if ( ta_ligada(v1_saida_reuso) ) muda_saida(v1_saida_reuso, true);
   if ( ta_ligada(v2_saida_chuva) ) muda_saida(v2_saida_chuva, true);
-  // Antigos posicionais
-  //~ muda_saida(v3_descarte_tanque, saida_salva_v3);
-  //~ muda_saida(v4_entrada_reuso, saida_salva_v4);
-  //~ muda_saida(v5_entrada_tratada, saida_salva_v5);
   // Reles
   muda_saida(eb_reservatorios, saida_salva_eb);
 }

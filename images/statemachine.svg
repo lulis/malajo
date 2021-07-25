@@ -194,9 +194,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.50196078"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="663.5"
-     inkscape:cy="406"
+     inkscape:zoom="0.97615385"
+     inkscape:cx="676.63515"
+     inkscape:cy="427.18676"
      inkscape:document-units="px"
      inkscape:current-layer="g681"
      inkscape:document-rotation="0"
@@ -211,7 +211,8 @@
      inkscape:snap-smooth-nodes="true"
      showguides="false"
      inkscape:pagecheckerboard="0"
-     inkscape:snap-page="false">
+     inkscape:snap-page="false"
+     borderlayer="true">
     <inkscape:grid
        type="xygrid"
        id="grid853"
@@ -400,11 +401,6 @@
          x="105.77751"
          y="72.429184"
          style="font-size:2.46944px;fill:#000000;stroke-width:0.264583"
-         id="tspan705">v5_entrada_tratada ABR @E4</tspan><tspan
-         sodipodi:role="line"
-         x="105.77751"
-         y="75.515984"
-         style="font-size:2.46944px;fill:#000000;stroke-width:0.264583"
          id="tspan405">eb_reservatorios LIG</tspan></text>
     <circle
        style="fill:#ffffff;stroke:#000000;stroke-width:0.529167;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
@@ -449,7 +445,7 @@
          x="171.92337"
          y="63.168781"
          style="font-size:2.46944px;fill:#000000;stroke-width:0.264583"
-         id="tspan421">v5_entrada_tratada FEC</tspan></text>
+         id="tspan421">v5_entrada_tratada FEC @E2</tspan></text>
     <path
        style="fill:none;stroke:#40914b;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker18283)"
        d="m 119.06251,46.302092 c 39.68751,0 39.68751,0 39.68751,0"
@@ -491,27 +487,27 @@
          x="238.06923"
          y="63.168781"
          style="font-size:2.46944px;fill:#000000;stroke-width:0.264583"
-         id="tspan443">v1_saida_reuso FEC @E3</tspan><tspan
+         id="tspan443">v1_saida_reuso FEC</tspan><tspan
          sodipodi:role="line"
          x="238.06923"
          y="66.255585"
          style="font-size:2.46944px;fill:#000000;stroke-width:0.264583"
-         id="tspan42442">v2_saida_chuva FEC @E3</tspan><tspan
+         id="tspan42442">v2_saida_chuva FEC</tspan><tspan
          sodipodi:role="line"
          x="238.06923"
          y="69.342384"
          style="font-size:2.46944px;fill:#000000;stroke-width:0.264583"
-         id="tspan445">v3_descarte_tanque ABR @E3</tspan><tspan
+         id="tspan445">v3_descarte_tanque ABR</tspan><tspan
          sodipodi:role="line"
          x="238.06923"
          y="72.429184"
          style="font-size:2.46944px;fill:#000000;stroke-width:0.264583"
-         id="tspan683">v5_entrada_tratada ABR @E3</tspan><tspan
+         id="tspan683">v5_entrada_tratada ABR</tspan><tspan
          sodipodi:role="line"
          x="238.06923"
          y="75.515984"
          style="font-size:2.46944px;fill:#000000;stroke-width:0.264583"
-         id="tspan447">eb_reservatorios DESL @E3</tspan></text>
+         id="tspan447">eb_reservatorios DESL</tspan></text>
     <path
        style="fill:none;stroke:#40914b;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker18293)"
        d="m 185.20836,46.302092 c 39.68751,0 39.68751,0 39.68751,0"
@@ -537,19 +533,19 @@
        transform="rotate(45)" />
     <path
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#918240;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker18303);stop-color:#000000;stop-opacity:1"
-       d="M 227.54167,54.239583 C 185.20834,72.760416 105.83334,83.34375 79.375002,78.052083 66.824416,75.541966 59.820352,58.284657 55.562501,51.59375"
+       d="m 227.54167,54.239583 c -31.75,23.8125 -103.1875,23.8125 -124.35417,23.8125 -12.799134,0 -42.333332,0 -52.916665,10.583333"
        id="path457"
        sodipodi:nodetypes="csc" />
     <text
        xml:space="preserve"
        style="font-size:2.82222px;line-height:1.25;font-family:sans-serif;text-align:center;text-anchor:middle;fill:#6e6331;fill-opacity:1;stroke-width:0.264583"
-       x="182.81528"
-       y="113.72761"
+       x="175.58711"
+       y="118.23788"
        id="text461"
        transform="rotate(-16.031627)"><tspan
          sodipodi:role="line"
-         x="182.81528"
-         y="113.72761"
+         x="175.58711"
+         y="118.23788"
          style="font-size:2.82222px;fill:#6e6331;fill-opacity:1;stroke-width:0.264583"
          id="tspan459">sv7_sabao ON</tspan></text>
     <circle
@@ -1187,7 +1183,7 @@
          id="tspan15932">OU usar_reuso</tspan></text>
     <path
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#408191;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;marker-end:url(#marker12386);stop-color:#000000;stop-opacity:1"
-       d="M 55.562501,41.010416 C 82.020835,17.197917 196.73635,16.638667 227.54167,38.364583"
+       d="M 55.562501,41.010416 C 71.844552,17.197917 142.43872,16.638667 161.39584,38.364583"
        id="path19662"
        sodipodi:nodetypes="cc" />
     <text
@@ -1196,7 +1192,7 @@
        x="186.96841"
        y="98.108643"
        id="text20741"
-       transform="translate(-40.590469,-77.714383)"><tspan
+       transform="translate(-75.724033,-77.348102)"><tspan
          sodipodi:role="line"
          x="186.96841"
          y="98.108643"
