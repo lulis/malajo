@@ -75,9 +75,7 @@ Tenha cuidado ao rearranjar as conexões dos pinos do arduino. O pino 0 em espec
 ## Alerta
 
 Para fazer uso deste material você deve concordar com a [licença de uso](./LICENSE).
+Intervenções elétricas podem causar danos e perdas (inclusive da garantia do seu equipamento), considere supervisão profissional.
 
 Este projeto de hardware/software é incipiente, baseado unicamente no equipamento disponível na execução do protótipo.
-
 As informações podem estar equivocadas ou incompletas, não há qualquer garantia ou responsabilidade sobre elas.
-
-Intervenções elétricas podem causar danos e perdas (inclusive da garantia do seu equipamento), considere supervisão profissional.
