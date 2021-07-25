@@ -133,8 +133,7 @@ void reset_config() {
 
 // Desativa saidas mimetizando comportamento usual da MLR
 void desativa_saidas() {
-  // Usamos direto muda_saida pois eh calibracao inicial.
-  // Se usar liga/desliga ele valida se eh necessario comutar e pode nao fazer
+  // Usamos direto muda_saida para forcar calibracao inicial
   muda_saida(eb_reservatorios, false);
   muda_saida(v1_saida_reuso, false);
   muda_saida(v2_saida_chuva, false);
@@ -202,7 +201,7 @@ void loop() {
 
   // ML Enchendo Lavagem
   case 3:
-    reavalia_entrada_agua(); // TODO TESTAR
+    //~ reavalia_entrada_agua(); // TODO TESTAR
     if ( ! ta_ligada(sv7_sabao) ) {
       if ( esperando_tempo_minimo_entrada()) return;
       desliga(eb_reservatorios);
@@ -276,7 +275,7 @@ void loop() {
 
   // ML Enchendo Enxague
   case 8:
-    reavalia_entrada_agua(); // TODO TESTAR
+    //~ reavalia_entrada_agua(); // TODO TESTAR
     if ( (eh_pre_enxague && !ta_ligada(sv7_sabao)) ||
       (!eh_pre_enxague && !ta_ligada(sv8_amacia)) ) {
       if ( esperando_tempo_minimo_entrada()) return;
@@ -377,6 +376,8 @@ bool ta_ligada(int entrada) {
       return saida_salva_v4;
     case v5_entrada_tratada:
       return saida_salva_v5;
+    default:
+      break;
   }
   if (entrada == eb_reservatorios) {
     // Rele funciona invertido, usamos "1-valor"
@@ -384,8 +385,8 @@ bool ta_ligada(int entrada) {
   }
   return digitalRead(entrada) == HIGH;
 }
-// liga/desliga saidas apenas se precisar (nao forca servos)
-// se precisar bypassar, usar muda_saida direto
+// Opera liga/desliga de saidas apenas se precisar (nao forca servos)
+// Quando precisar forcar, prefira usar "muda_saida" diretamente
 void liga(int saida) {
   if (!ta_ligada(saida)) muda_saida(saida, true);
 }
@@ -455,7 +456,7 @@ void inibe_saidas() {
 }
 void restaura_saidas() {
   // Servomotores
-  // - Forcamos muda_saida pra garantir volta ao estado que estava salvo
+  // - Forcamos muda_saida pra garantir volta ao estado previamente salvo
   if ( ta_ligada(v1_saida_reuso) ) muda_saida(v1_saida_reuso, true);
   if ( ta_ligada(v2_saida_chuva) ) muda_saida(v2_saida_chuva, true);
   // Antigos posicionais
