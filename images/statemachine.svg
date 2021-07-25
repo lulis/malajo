@@ -194,11 +194,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.50196078"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.5"
-     inkscape:cx="917"
-     inkscape:cy="670"
+     inkscape:zoom="1"
+     inkscape:cx="663.5"
+     inkscape:cy="406"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g681"
      inkscape:document-rotation="0"
      showgrid="true"
      inkscape:window-width="1920"
@@ -207,11 +207,11 @@
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      units="px"
-     inkscape:snap-grids="false"
+     inkscape:snap-grids="true"
      inkscape:snap-smooth-nodes="true"
      showguides="false"
      inkscape:pagecheckerboard="0"
-     inkscape:snap-page="true">
+     inkscape:snap-page="false">
     <inkscape:grid
        type="xygrid"
        id="grid853"
@@ -237,7 +237,7 @@
      inkscape:label="bg"
      sodipodi:insensitive="true">
     <rect
-       style="fill:#ffffff;fill-opacity:0.5;stroke:none;stroke-width:0.529167;-inkscape-stroke:none;stop-color:#000000"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.529167;-inkscape-stroke:none;stop-color:#000000"
        id="rect1439"
        width="343.95834"
        height="211.66667"
