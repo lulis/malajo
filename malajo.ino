@@ -14,7 +14,7 @@
 /// Saidas Digitais
 // Saidas NF/NA (Normalmente Aberta) tratadas em "muda_saida"
 // valvula saida reservatorio reuso (NF)
-const int v1_saida_reuso = 13; // TODO: usar pin 1 ?
+const int v1_saida_reuso = 1;
 // valvula saida reservatorio chuva (NF)
 const int v2_saida_chuva = 2;
 // valvula saida descarte para tanque (NA)
@@ -49,17 +49,17 @@ const int sv8_amacia = 8;
 // sensor valvula eletrobomba descarga MLR
 const int seb_descarga = 9;
 // sensor micro chave tampa MLR
-const int smc_tampa = 11;
+const int smc_tampa = 10;
 // array com todas entradas
 const int pinos_entradas[] = {sv7_sabao, sv8_amacia, seb_descarga, smc_tampa};
 
 /// Outros
 // botao selecao modo uso agua da chuva
-const int btn_chuva = 10;
+const int btn_chuva = 12;
 // botao selecao modo uso agua de reuso
-const int btn_reuso = 1;
+const int btn_reuso = 11;
 // botao selecao modo PET (roupa muito suja, nao reusar agua)
-const int btn_pet_mode = 12;
+const int btn_pet_mode = 13;
 // led indicacao estado atual
 const int led_estado = 0;
 // tempo (ms) de agua limpa pro dispenser
