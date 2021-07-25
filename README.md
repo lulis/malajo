@@ -23,7 +23,7 @@ A figura abaixo ilustra o equema do circuito.
 
 ![esquema do circuito](./images/tinkercad.png)
 
-Para detalhes e simulação, consulte o projeto [disponível no Tinkercad](https://www.tinkercad.com/things/6bKUwA3vuQ2-malajo-08).
+Para detalhes e simulação, consulte o projeto [disponível no Tinkercad](https://www.tinkercad.com/things/6bKUwA3vuQ2).
 
 
 
