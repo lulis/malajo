@@ -11,7 +11,7 @@
 
 //// CONSTANTES ////
 
-/// Saidas Digitais
+/// Saidas Digitais para MLR
 // Saidas NF/NA (Normalmente Aberta) tratadas em "muda_saida"
 // valvula saida reservatorio reuso (NF)
 const int v1_saida_reuso = 1;
@@ -41,7 +41,7 @@ int SERVO_FECHANDO = 180;
 unsigned long tempo_curso_valvula = 750;
 
 
-/// Entradas Digitais
+/// Entradas Digitais da MLR
 // sensor valvula dispenser MLR - Sabão
 const int sv7_sabao = 7;
 // sensor valvula dispenser MLR - Amaciante
@@ -54,10 +54,10 @@ const int smc_tampa = 10;
 const int pinos_entradas[] = {sv7_sabao, sv8_amacia, seb_descarga, smc_tampa};
 
 /// Outros
-// botao selecao modo uso agua da chuva
-const int btn_chuva = 12;
 // botao selecao modo uso agua de reuso
 const int btn_reuso = 11;
+// botao selecao modo uso agua da chuva
+const int btn_chuva = 12;
 // botao selecao modo PET (roupa muito suja, nao reusar agua)
 const int btn_pet_mode = 13;
 // led indicacao estado atual
