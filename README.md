@@ -2,7 +2,7 @@
 
 Malajo é um projeto de hardware/software para reuso de água de forma ecoeficiente em máquinas de lavar roupas.
 
-Malajo é uma pseudo-sigla para _Máquina de Lavar Roupas Ecoeficiente do Jovim_.
+_Malajo_ é uma pseudo-sigla para _Máquina de Lavar Roupas Ecoeficiente do Jovim_.
 
 
 
@@ -14,13 +14,17 @@ Usando um arduino para acompanhar o processo da máquina de lavar, controla-se u
 
 ![visão geral](./images/overview.svg)
 
-Uma visão geral do processo:
+Diagrama dos estados e ações dos processos de lavagem:
 
 ![diagrama do processo](./images/statemachine.svg)
 
-Para detalhes e simulação, consulte o projeto disponível no Tinkercad:
+O código do arduino pode ser encontrado em [malajo.ino].
+A figura abaixo ilustra o equema do circuito.
 
 ![esquema do circuito](./images/circuito.png)
+
+Para detalhes e simulação, consulte o projeto [disponível no Tinkercad]().
+
 
 
 ## Uso
@@ -71,6 +75,9 @@ Tenha cuidado ao rearranjar as conexões dos pinos do arduino. O pino 0 em espec
 ## Alerta
 
 Para fazer uso deste material você deve concordar com a [licença de uso](./LICENSE).
+
 Este projeto de hardware/software é incipiente, baseado unicamente no equipamento disponível na execução do protótipo.
+
 As informações podem estar equivocadas ou incompletas, não há qualquer garantia ou responsabilidade sobre elas.
+
 Intervenções elétricas podem causar danos e perdas (inclusive da garantia do seu equipamento), considere supervisão profissional.
