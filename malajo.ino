@@ -1,4 +1,5 @@
 // MALAJO - Máquina de Lavar Roupas Ecoeficiente do Jovim
+// https://github.com/lulis/malajo
 // v0.8.2.1
 #include <Servo.h>
 
@@ -7,18 +8,13 @@
 // COMENTAR com "//" a linha abaixo PARA USAR NO ARDUINO !!!
 #define TINKERCAD_MODE
 
-// ALERTA !!!
-// Pin 0 (PET) na simulacao tinkercad fica sempre ON!!!
-// Talvez seja limitacao da Serial o uso dos pinos 0 e 1
-
 
 //// CONSTANTES ////
 
 /// Saidas Digitais
-// Saidas NF/NA (Normalmente Aberta) tratadas em "mudaEstado"
+// Saidas NF/NA (Normalmente Aberta) tratadas em "muda_saida"
 // valvula saida reservatorio reuso (NF)
-// TODO: seria mais "natural" a associacao se fosse "1"
-const int v1_saida_reuso = 13;
+const int v1_saida_reuso = 13; // TODO: usar pin 1 ?
 // valvula saida reservatorio chuva (NF)
 const int v2_saida_chuva = 2;
 // valvula saida descarte para tanque (NA)
@@ -55,7 +51,7 @@ const int seb_descarga = 9;
 // sensor micro chave tampa MLR
 const int smc_tampa = 11;
 // array com todas entradas
-const int pinos_entradas[] = { sv7_sabao, sv8_amacia, seb_descarga, smc_tampa};
+const int pinos_entradas[] = {sv7_sabao, sv8_amacia, seb_descarga, smc_tampa};
 
 /// Outros
 // botao selecao modo uso agua da chuva
@@ -64,7 +60,7 @@ const int btn_chuva = 10;
 const int btn_reuso = 1;
 // botao selecao modo PET (roupa muito suja, nao reusar agua)
 const int btn_pet_mode = 12;
-// led indicacao estado atual (pin 13 = LED_BUILTIN)
+// led indicacao estado atual
 const int led_estado = 0;
 // tempo (ms) de agua limpa pro dispenser
 unsigned long tempo_dispenser = 60000;
@@ -428,15 +424,15 @@ void muda_saida(int saida, bool valor) {
 
 // Variaveis e funcoes EXCLUSIVAS
 // Para manipulacao de portas de saida
-// Usando Servo Rotacional (preserva posicao da valvula), tratamos apenas Reles
+// Usando Servo Rotacional (preserva posicao da valvula)
 void inibe_saidas() {
   // Salvamento
   // - Implementado a cada alteracao, em "muda_saida"
   // Desativacao
-  // - Estado inicial seria ideal, mas evitamos movimentacao inutil de valvulas joao
+  // - Estado inicial seria ideal, mas evitamos movimentacao inutil de valvulas
   //~ desativa_saidas();
   // Servomotores
-  // - Apenas v1 e v2, por causa do efeito sifão, se ligados
+  // - Apenas v1 e v2, para evitar transvase por efeito sifão, se ligados
   if ( ta_ligada(v1_saida_reuso) ) desliga(v1_saida_reuso);
   if ( ta_ligada(v2_saida_chuva) ) desliga(v2_saida_chuva);
   // Reles
@@ -456,7 +452,6 @@ void restaura_saidas() {
 
 // Variaveis e funcoes EXCLUSIVAS
 // Para logica de LED de estado atual
-// Quase da pra debugar (ruim!) com osciloscopio 500ms
 unsigned long previous_millis = 0;
 bool led_status = false;
 int piscadas = 0;
