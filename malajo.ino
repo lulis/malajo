@@ -1,6 +1,6 @@
 // MALAJO - Máquina de Lavar Roupas Ecoeficiente do Jovim
 // https://github.com/lulis/malajo
-// v0.9-DEVEL
+// v0.9.DEVEL
 #include <Servo.h>
 
 //// TINKERCAD_MODE ////
