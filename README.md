@@ -18,7 +18,7 @@ Diagrama dos estados e ações dos processos de lavagem:
 
 ![diagrama do processo](./images/statemachine.svg)
 
-O código do arduino pode ser encontrado em [malajo.ino].
+O código do arduino está disponível no arquivo [malajo.ino](malajo.ino).
 A figura abaixo ilustra o equema do circuito.
 
 ![esquema do circuito](./images/circuito.png)
@@ -74,7 +74,7 @@ Tenha cuidado ao rearranjar as conexões dos pinos do arduino. O pino 0 em espec
 
 ## Alerta
 
-Para fazer uso deste material você deve concordar com a [licença de uso](./LICENSE).
+Para fazer uso deste material você deve concordar com a [licença de uso](LICENSE).
 Intervenções elétricas podem causar danos e perdas (inclusive da garantia do seu equipamento), considere supervisão profissional.
 
 Este projeto de hardware/software é incipiente, baseado unicamente no equipamento disponível na execução do protótipo.
