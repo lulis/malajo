@@ -18,12 +18,11 @@ Diagrama dos estados e ações dos processos de lavagem:
 
 ![diagrama do processo](./images/statemachine.svg)
 
-O código do arduino está disponível no arquivo [malajo.ino](malajo.ino).
-A figura abaixo ilustra o equema do circuito.
+A figura abaixo ilustra o esquema do circuito.
+O código do arduino está disponível no arquivo [`malajo.ino`](malajo.ino).
+Para detalhes e simulação, consulte o [projeto disponível](https://www.tinkercad.com/things/6bKUwA3vuQ2) no Tinkercad.
 
 ![esquema do circuito](./images/tinkercad.png)
-
-Para detalhes e simulação, consulte o projeto [disponível no Tinkercad](https://www.tinkercad.com/things/6bKUwA3vuQ2).
 
 
 
