@@ -1,6 +1,6 @@
 // MALAJO - Máquina de Lavar Roupas Ecoeficiente do Jovim
 // https://github.com/lulis/malajo
-// v0.8.3
+// v0.9
 #include <Servo.h>
 
 //// TINKERCAD_MODE ////
@@ -133,12 +133,13 @@ void reset_config() {
 
 // Desativa saidas mimetizando comportamento usual da MLR
 void desativa_saidas() {
-  desliga(eb_reservatorios);
-  desliga(v1_saida_reuso);
-  desliga(v2_saida_chuva);
-  liga(v3_descarte_tanque);
-  desliga(v4_entrada_reuso);
-  liga(v5_entrada_tratada);
+  // Usamos direto muda_saida para forcar calibracao inicial
+  muda_saida(eb_reservatorios, false);
+  muda_saida(v1_saida_reuso, false);
+  muda_saida(v2_saida_chuva, false);
+  muda_saida(v3_descarte_tanque, true);
+  muda_saida(v4_entrada_reuso, false);
+  muda_saida(v5_entrada_tratada, true);
 }
 
 
@@ -185,7 +186,7 @@ void loop() {
       }
       // se nao, usa apenas agua limpa
       else {
-        troca_estado(4);
+        troca_estado(3);
       }
     }
     break;
@@ -193,24 +194,25 @@ void loop() {
   // ML Enchendo Lavagem + Dispenser
   case 2:
     if ( tempo_ultima_troca_estado() >= tempo_dispenser ) {
-      desliga(v5_entrada_tratada);
+      // so desligamos a agua limpa se houver outra entrada de agua ativa
+      if (ta_ligada(eb_reservatorios)) desliga(v5_entrada_tratada);
       troca_estado(3);
     }
+    reavalia_entrada_agua();
     break;
 
   // ML Enchendo Lavagem
   case 3:
-    //~ reavalia_entrada_agua(); TODO
     if ( ! ta_ligada(sv7_sabao) ) {
       if ( esperando_tempo_minimo_entrada()) return;
       desliga(eb_reservatorios);
-      // desliga saidas reuso ou chuva se precisar (nao forca servo)
-      if ( ta_ligada(v1_saida_reuso) ) desliga(v1_saida_reuso);
-      if ( ta_ligada(v2_saida_chuva) ) desliga(v2_saida_chuva);
+      desliga(v1_saida_reuso);
+      desliga(v2_saida_chuva);
       liga(v3_descarte_tanque);
       liga(v5_entrada_tratada);
       troca_estado(4);
     }
+    reavalia_entrada_agua();
     break;
 
   // ML Lavando
@@ -219,21 +221,10 @@ void loop() {
       if ( esperando_tempo_minimo_entrada()) return;
       troca_estado(5);
     }
-    // Caso altere nivel da ML e comece re-encher
+    // Caso altere nivel da ML e comece re-encher, reiniciamos
     else if ( ta_ligada(sv7_sabao) ) {
       if ( esperando_tempo_minimo_entrada()) return;
-      if ( ta_ligada(btn_reuso) || ta_ligada(btn_chuva) ) {
-        // usa preferencialmente reuso, se nao, usa chuva
-        if ( ta_ligada(btn_reuso) ) {
-          liga(v1_saida_reuso);
-        } else {
-          liga(v2_saida_chuva);
-        }
-        desliga(v3_descarte_tanque);
-        liga(v5_entrada_tratada);
-        liga(eb_reservatorios);
-        troca_estado(2);
-      }
+      troca_estado(1);
     }
     break;
 
@@ -268,9 +259,11 @@ void loop() {
   // ML Enchendo Enxague + Dispenser
   case 7:
     if ( tempo_ultima_troca_estado() >= tempo_dispenser ) {
-      desliga(v5_entrada_tratada);
+      // so desligamos a agua limpa se houver outra entrada de agua ativa
+      if (ta_ligada(eb_reservatorios)) desliga(v5_entrada_tratada);
       troca_estado(8);
     }
+    reavalia_entrada_agua();
     break;
 
   // ML Enchendo Enxague
@@ -284,6 +277,7 @@ void loop() {
       liga(v5_entrada_tratada);
       troca_estado(9);
     }
+    reavalia_entrada_agua();
     break;
 
   // ML Enxaguando
@@ -304,8 +298,7 @@ void loop() {
     if ( ! ta_ligada(seb_descarga) ) {
       if ( esperando_tempo_minimo_entrada()) return;
       if ( eh_pre_enxague ) {
-        // desliga entrada reuso se precisar (nao forca servo)
-        if ( ta_ligada(v4_entrada_reuso) ) desliga(v4_entrada_reuso);
+        desliga(v4_entrada_reuso);
         troca_estado(6);
       }
       else {
@@ -351,6 +344,29 @@ void reinicia_tempo_minimo_entrada(){
     avaliando_entrada = false;
   }
 }
+// Revisa sensores de nivel dos reservatorios, se necessario comuta origem da agua
+void reavalia_entrada_agua(){
+  delay(tempo_espera_estado); // delay minimo para evitar oscilacoes
+  // se esta enchendo com agua de reuso, mas nao pode mais
+  if ( ta_ligada(v1_saida_reuso) && !ta_ligada(btn_reuso) ) {
+    desliga(v1_saida_reuso);
+    // se houver agua da chuva, usamos
+    if ( ta_ligada(btn_chuva) ) {
+      liga(v2_saida_chuva);
+    }
+    // se nao, usamos agua limpa
+    else {
+      desliga(eb_reservatorios);
+      liga(v5_entrada_tratada);
+    }
+  }
+  // se esta enchendo com agua da chuva, mas nao pode mais
+  else if ( ta_ligada(v2_saida_chuva) && !ta_ligada(btn_chuva) ) {
+    desliga(eb_reservatorios);
+    desliga(v2_saida_chuva);
+    liga(v5_entrada_tratada);
+  }
+}
 
 // Funcoes auxiliares de IN/OUT
 bool saida_salva_eb, saida_salva_v1, saida_salva_v2, saida_salva_v3, saida_salva_v4, saida_salva_v5;
@@ -369,17 +385,23 @@ bool ta_ligada(int entrada) {
     default:
       break;
   }
+  if (entrada == eb_reservatorios) {
+    // Rele funciona invertido, usamos "1-valor"
+    return digitalRead(entrada) == LOW;
+  }
   return digitalRead(entrada) == HIGH;
 }
+// Opera liga/desliga de saidas apenas se precisar (nao forca servos)
+// Quando precisar forcar, prefira usar "muda_saida" diretamente
 void liga(int saida) {
-  muda_saida(saida, true);
+  if (!ta_ligada(saida)) muda_saida(saida, true);
 }
 void desliga(int saida) {
-  muda_saida(saida, false);
+  if (ta_ligada(saida)) muda_saida(saida, false);
 }
 void muda_saida(int saida, bool valor) {
   // Saidas Rele
-  if (saida ==  eb_reservatorios) {
+  if (saida == eb_reservatorios) {
     // Rele funciona invertido, usamos "1-valor"
     digitalWrite(saida, 1 - valor);
     if (!tampa_estava_aberta) saida_salva_eb = valor;
@@ -432,19 +454,17 @@ void inibe_saidas() {
   // - Estado inicial seria ideal, mas evitamos movimentacao inutil de valvulas
   //~ desativa_saidas();
   // Servomotores
-  // - Apenas v1 e v2, para evitar transvase por efeito sifão, se ligados
-  if ( ta_ligada(v1_saida_reuso) ) desliga(v1_saida_reuso);
-  if ( ta_ligada(v2_saida_chuva) ) desliga(v2_saida_chuva);
+  // - Apenas v1 e v2, para evitar transvase por efeito sifão
+  desliga(v1_saida_reuso);
+  desliga(v2_saida_chuva);
   // Reles
   desliga(eb_reservatorios);
 }
 void restaura_saidas() {
   // Servomotores
-  if ( ta_ligada(v1_saida_reuso) ) liga(v1_saida_reuso);
-  if ( ta_ligada(v2_saida_chuva) ) liga(v2_saida_chuva);
-  //~ muda_saida(v3_descarte_tanque, saida_salva_v3);
-  //~ muda_saida(v4_entrada_reuso, saida_salva_v4);
-  //~ muda_saida(v5_entrada_tratada, saida_salva_v5);
+  // - Forcamos muda_saida pra garantir volta ao estado previamente salvo
+  if ( ta_ligada(v1_saida_reuso) ) muda_saida(v1_saida_reuso, true);
+  if ( ta_ligada(v2_saida_chuva) ) muda_saida(v2_saida_chuva, true);
   // Reles
   muda_saida(eb_reservatorios, saida_salva_eb);
 }
