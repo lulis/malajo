@@ -194,9 +194,11 @@ void loop() {
   // ML Enchendo Lavagem + Dispenser
   case 2:
     if ( tempo_ultima_troca_estado() >= tempo_dispenser ) {
-      desliga(v5_entrada_tratada);
+      // so desligamos a agua limpa se houver outra entrada de agua ativa
+      if (ta_ligada(eb_reservatorios)) desliga(v5_entrada_tratada);
       troca_estado(3);
     }
+    reavalia_entrada_agua();
     break;
 
   // ML Enchendo Lavagem
@@ -257,9 +259,11 @@ void loop() {
   // ML Enchendo Enxague + Dispenser
   case 7:
     if ( tempo_ultima_troca_estado() >= tempo_dispenser ) {
-      desliga(v5_entrada_tratada);
+      // so desligamos a agua limpa se houver outra entrada de agua ativa
+      if (ta_ligada(eb_reservatorios)) desliga(v5_entrada_tratada);
       troca_estado(8);
     }
+    reavalia_entrada_agua();
     break;
 
   // ML Enchendo Enxague
