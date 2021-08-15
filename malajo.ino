@@ -13,17 +13,17 @@
 
 /// Saidas Digitais para MLR
 // Saidas NF/NA (Normalmente Aberta) tratadas em "muda_saida"
-// valvula saida reservatorio reuso (NF)
+// V1. Válvula saída reservatório Reuso (NF)
 const int v1_saida_reuso = 1;
-// valvula saida reservatorio chuva (NF)
+// V2. Válvula saída reservatório Chuva (NF)
 const int v2_saida_chuva = 2;
-// valvula saida descarte para tanque (NA)
+// V3. Válvula saída descarte para tanque (NA)
 const int v3_descarte_tanque = 3;
-// valvula entrada reservatorio reuso (NF)
+// V4. Válvula entrada reservatório Reuso (NF)
 const int v4_entrada_reuso = 4;
-// valvula entrada agua limpa (NA)
+// V5. Válvula entrada água tratada (NA)
 const int v5_entrada_tratada = 5;
-// eletrobomba saida reservatorios
+// EB. Eletrobomba saída reservatórios
 const int eb_reservatorios = 6;
 
 // Servomotores associados às valvulas
@@ -42,13 +42,13 @@ unsigned long tempo_curso_valvula = 750;
 
 
 /// Entradas Digitais da MLR
-// sensor valvula dispenser MLR - Sabão
+// SV7. Sensor válvula dispenser Sabão
 const int sv7_sabao = 7;
-// sensor valvula dispenser MLR - Amaciante
+// SV8. Sensor válvula dispenser Amaciante
 const int sv8_amacia = 8;
-// sensor valvula eletrobomba descarga MLR
+// SEB. Sensor válvula eletrobomba descarga
 const int seb_descarga = 9;
-// sensor micro chave tampa MLR
+// SMC. Sensor micro-chave abertura tampa
 const int smc_tampa = 10;
 // array com todas entradas
 const int pinos_entradas[] = {sv7_sabao, sv8_amacia, seb_descarga, smc_tampa};
@@ -62,7 +62,7 @@ const int btn_chuva = 12;
 const int btn_pet_mode = 13;
 // led indicacao estado atual
 const int led_estado = 0;
-// tempo (ms) de agua limpa pro dispenser
+// tempo (ms) de agua tratada pro dispenser
 unsigned long tempo_dispenser = 60000;
 // tempo (ms) de espera entre troca de estados
 unsigned long tempo_espera_estado = 500;
@@ -184,7 +184,7 @@ void loop() {
         liga(eb_reservatorios);
         troca_estado(2);
       }
-      // se nao, usa apenas agua limpa
+      // se nao, usa apenas agua tratada
       else {
         troca_estado(3);
       }
@@ -194,7 +194,7 @@ void loop() {
   // ML Enchendo Lavagem + Dispenser
   case 2:
     if ( tempo_ultima_troca_estado() >= tempo_dispenser ) {
-      // so desligamos a agua limpa se houver outra entrada de agua ativa
+      // so desligamos a agua tratada se houver outra entrada de agua ativa
       if (ta_ligada(eb_reservatorios)) desliga(v5_entrada_tratada);
       troca_estado(3);
     }
@@ -249,7 +249,7 @@ void loop() {
         liga(eb_reservatorios);
         troca_estado(7);
       }
-      // agua limpa
+      // agua tratada
       else {
         troca_estado(9);
       }
@@ -259,7 +259,7 @@ void loop() {
   // ML Enchendo Enxague + Dispenser
   case 7:
     if ( tempo_ultima_troca_estado() >= tempo_dispenser ) {
-      // so desligamos a agua limpa se houver outra entrada de agua ativa
+      // so desligamos a agua tratada se houver outra entrada de agua ativa
       if (ta_ligada(eb_reservatorios)) desliga(v5_entrada_tratada);
       troca_estado(8);
     }
@@ -354,7 +354,7 @@ void reavalia_entrada_agua(){
     if ( ta_ligada(btn_chuva) ) {
       liga(v2_saida_chuva);
     }
-    // se nao, usamos agua limpa
+    // se nao, usamos agua tratada
     else {
       desliga(eb_reservatorios);
       liga(v5_entrada_tratada);
