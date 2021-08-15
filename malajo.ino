@@ -425,6 +425,7 @@ void muda_saida(int saida, bool valor) {
     case v3_descarte_tanque:
       if (!tampa_estava_aberta) saida_salva_v3 = valor;
       servo_v3.write(velocidade);
+      // v3 precisa de mais tempo de curso pois emperra com frequencia (sujeira)
       delay(tempo_curso_valvula * 1.33);
       servo_v3.write(SERVO_PARADO);
       break;
