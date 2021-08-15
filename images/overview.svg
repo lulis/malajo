@@ -26,8 +26,8 @@
      showgrid="true"
      units="px"
      inkscape:zoom="1.4142136"
-     inkscape:cx="460.68007"
-     inkscape:cy="238.29499"
+     inkscape:cx="460.68006"
+     inkscape:cy="238.29498"
      inkscape:current-layer="layer1"
      borderlayer="true"
      inkscape:snap-global="true"
@@ -519,7 +519,7 @@
          id="tspan43451"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;vector-effect:none;fill:#4d4d4d;fill-opacity:1;stroke-width:0.264583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
          x="36.448555"
-         y="198.34973">TRATADA</tspan></text>
+         y="198.34973">REDE</tspan></text>
     <path
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#666666;stroke-width:0.79375;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        d="M 214.11802,67.90011 234.74025,55.993859"
@@ -816,7 +816,7 @@
          style="font-size:2.46944px;text-align:start;text-anchor:start;fill:#1a1a1a;stroke-width:0.264583"
          x="263.22757"
          y="59.117733"
-         id="tspan163036">V5. Válvula entrada água tratada</tspan><tspan
+         id="tspan163036">V5. Válvula entrada água tratada da rede</tspan><tspan
          sodipodi:role="line"
          style="font-size:2.46944px;text-align:start;text-anchor:start;fill:#1a1a1a;stroke-width:0.264583"
          x="263.22757"

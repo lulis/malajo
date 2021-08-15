@@ -21,7 +21,7 @@ const int v2_saida_chuva = 2;
 const int v3_descarte_tanque = 3;
 // V4. Válvula entrada reservatório Reuso (NF)
 const int v4_entrada_reuso = 4;
-// V5. Válvula entrada água tratada (NA)
+// V5. Válvula entrada água tratada da rede (NA)
 const int v5_entrada_tratada = 5;
 // EB. Eletrobomba saída reservatórios
 const int eb_reservatorios = 6;

@@ -14,7 +14,7 @@ Usando um arduino para acompanhar o processo da máquina de lavar, controla-se u
 
 ![visão geral](./images/overview.svg)
 
-Diagrama dos estados e ações dos processos de lavagem:
+Este é o diagrama dos estados da máquina de lavar e ações durante o processos de lavagem:
 
 ![diagrama do processo](./images/statemachine.svg)
 
@@ -24,6 +24,7 @@ Para detalhes e simulação, consulte o [projeto disponível](https://www.tinker
 
 ![esquema do circuito](./images/tinkercad.png)
 
+Detalhes da implementação estão nos diagramas [elétrico](docs/diag_eletrico.pdf) e [hidráulico](docs/diag_hidraulico.pdf).
 
 
 ## Uso
