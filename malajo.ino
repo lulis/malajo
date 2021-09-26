@@ -1,6 +1,6 @@
 // MALAJO - Máquina de Lavar Roupas Ecoeficiente do Jovim
 // https://github.com/lulis/malajo
-// v0.9
+// v0.9.1
 #include <Servo.h>
 
 //// TINKERCAD_MODE ////
@@ -88,10 +88,10 @@ void setup()
 {
   #ifdef TINKERCAD_MODE
     // reduzimos os tempos pra ficar viavel a simulacao
-    tempo_dispenser = 750;
+    tempo_dispenser = 2000;
     tempo_espera_estado = 250;
     tempo_minimo_entrada = 250;
-    tempo_espera_tampa = 500;
+    tempo_espera_tampa = 1000;
     // usamos angulos curtos nos servos, que nos ajudam a ver
     SERVO_ABRINDO = 150;
     SERVO_PARADO = 90;
@@ -153,7 +153,7 @@ void loop() {
     ultimo_tempo_tampa = millis();
     if ( ! tampa_estava_aberta ) {
       tampa_estava_aberta = true;
-      inibe_saidas();
+      salva_e_inibe_saidas();
     }
     return;
   }
@@ -369,27 +369,28 @@ void reavalia_entrada_agua(){
 }
 
 // Funcoes auxiliares de IN/OUT
-bool saida_salva_eb, saida_salva_v1, saida_salva_v2, saida_salva_v3, saida_salva_v4, saida_salva_v5;
-bool ta_ligada(int entrada) {
-  switch (entrada) {
+// Para valvulas (servo rotacional) armazenamos status em variaveis temporarias
+bool status_v1, status_v2, status_v3, status_v4, status_v5;
+bool ta_ligada(int porta) {
+  switch (porta) {
+    // Status valvulas servomotor rotacional
     case v1_saida_reuso:
-      return saida_salva_v1;
+      return status_v1;
     case v2_saida_chuva:
-      return saida_salva_v2;
+      return status_v2;
     case v3_descarte_tanque:
-      return saida_salva_v3;
+      return status_v3;
     case v4_entrada_reuso:
-      return saida_salva_v4;
+      return status_v4;
     case v5_entrada_tratada:
-      return saida_salva_v5;
+      return status_v5;
+    // Reles funcionam com logica invertida
+    case eb_reservatorios:
+      return digitalRead(porta) == LOW;
+    // Outras portas digitais tem funcionamento padrao
     default:
-      break;
+      return digitalRead(porta) == HIGH;
   }
-  if (entrada == eb_reservatorios) {
-    // Rele funciona invertido, usamos "1-valor"
-    return digitalRead(entrada) == LOW;
-  }
-  return digitalRead(entrada) == HIGH;
 }
 // Opera liga/desliga de saidas apenas se precisar (nao forca servos)
 // Quando precisar forcar, prefira usar "muda_saida" diretamente
@@ -400,74 +401,71 @@ void desliga(int saida) {
   if (ta_ligada(saida)) muda_saida(saida, false);
 }
 void muda_saida(int saida, bool valor) {
-  // Saidas Rele
-  if (saida == eb_reservatorios) {
-    // Rele funciona invertido, usamos "1-valor"
-    digitalWrite(saida, 1 - valor);
-    if (!tampa_estava_aberta) saida_salva_eb = valor;
-  }
-  // Saidas Servomotor
-  else {
-    int velocidade = valor ? SERVO_ABRINDO : SERVO_FECHANDO;
-    switch (saida) {
+  int velocidade = valor ? SERVO_ABRINDO : SERVO_FECHANDO;
+  switch (saida) {
+    // Saidas valvulas servomotor rotacional
     case v1_saida_reuso:
-      if (!tampa_estava_aberta) saida_salva_v1 = valor;
       servo_v1.write(velocidade);
       delay(tempo_curso_valvula);
+      status_v1 = valor;
       servo_v1.write(SERVO_PARADO);
       break;
     case v2_saida_chuva:
-      if (!tampa_estava_aberta) saida_salva_v2 = valor;
       servo_v2.write(velocidade);
       delay(tempo_curso_valvula);
+      status_v2 = valor;
       servo_v2.write(SERVO_PARADO);
       break;
     case v3_descarte_tanque:
-      if (!tampa_estava_aberta) saida_salva_v3 = valor;
       servo_v3.write(velocidade);
-      // v3 precisa de mais tempo de curso pois emperra com frequencia (sujeira)
+      // v3 precisa de mais tempo de curso pois emperra com frequencia (sujeira/pressao)
       delay(tempo_curso_valvula * 1.33);
+      status_v3 = valor;
       servo_v3.write(SERVO_PARADO);
       break;
     case v4_entrada_reuso:
-      if (!tampa_estava_aberta) saida_salva_v4 = valor;
       servo_v4.write(velocidade);
       delay(tempo_curso_valvula);
+      status_v4 = valor;
       servo_v4.write(SERVO_PARADO);
       break;
     case v5_entrada_tratada:
-      if (!tampa_estava_aberta) saida_salva_v5 = valor;
       servo_v5.write(velocidade);
       delay(tempo_curso_valvula);
+      status_v5 = valor;
       servo_v5.write(SERVO_PARADO);
       break;
-    }
+    // Saidas Reles funcionam com logica invertida
+    case eb_reservatorios:
+      digitalWrite(saida, 1 - valor);
+      break;
+    // Outras saidas digitais (a priori, inexistentes) "teriam" funcionamento padrao
+    default:
+      digitalWrite(saida, valor);
   }
 }
 
-// Variaveis e funcoes EXCLUSIVAS
-// Para manipulacao de portas de saida
-// Usando Servo Rotacional (preserva posicao da valvula)
-void inibe_saidas() {
-  // Salvamento
-  // - Implementado a cada alteracao, em "muda_saida"
-  // Desativacao
-  // - Estado inicial seria ideal, mas evitamos movimentacao inutil de valvulas
-  //~ desativa_saidas();
-  // Servomotores
-  // - Apenas v1 e v2, para evitar transvase por efeito sifão
-  desliga(v1_saida_reuso);
-  desliga(v2_saida_chuva);
+// Variaveis e funcoes EXCLUSIVAS para manipulacao de portas de saida
+// usando Servo Rotacional (preserva posicao da valvula na falta de energia)
+bool estava_ligada_eb, estava_ligada_v1, estava_ligada_v2;
+void salva_e_inibe_saidas() {
+  // Retomar estado inicial seria ideal, mas evitamos movimentacao inutil de valvulas
   // Reles
+  estava_ligada_eb = ta_ligada(eb_reservatorios);
   desliga(eb_reservatorios);
+  // Servomotores
+  // - Fechamos apenas v1 e v2, para evitar transvase por efeito sifão
+  estava_ligada_v1 = ta_ligada(v1_saida_reuso);
+  desliga(v1_saida_reuso);
+  estava_ligada_v2 = ta_ligada(v2_saida_chuva);
+  desliga(v2_saida_chuva);
 }
 void restaura_saidas() {
   // Servomotores
-  // - Forcamos muda_saida pra garantir volta ao estado previamente salvo
-  if ( ta_ligada(v1_saida_reuso) ) muda_saida(v1_saida_reuso, true);
-  if ( ta_ligada(v2_saida_chuva) ) muda_saida(v2_saida_chuva, true);
+  if ( estava_ligada_v1 ) liga(v1_saida_reuso);
+  if ( estava_ligada_v2 ) liga(v2_saida_chuva);
   // Reles
-  muda_saida(eb_reservatorios, saida_salva_eb);
+  if ( estava_ligada_eb ) liga(eb_reservatorios);
 }
 
 
