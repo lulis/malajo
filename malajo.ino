@@ -160,6 +160,8 @@ void loop() {
   else if ( tampa_estava_aberta ) {
     if ( millis() - tempo_espera_tampa >= ultimo_tempo_tampa ) {
       tampa_estava_aberta = false;
+      // Reinicia tempo de dispenser (E2/E7)
+      ultima_troca_estado = millis();
       restaura_saidas();
     }
     return;
