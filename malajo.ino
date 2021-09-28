@@ -1,6 +1,6 @@
 // MALAJO - Máquina de Lavar Roupas Ecoeficiente do Jovim
 // https://github.com/lulis/malajo
-// v0.9.1
+// v0.9.2
 #include <Servo.h>
 
 //// TINKERCAD_MODE ////
@@ -70,7 +70,7 @@ unsigned long tempo_espera_estado = 500;
 // para considerar valido proceder com a troca de estado
 unsigned long tempo_minimo_entrada = 2000;
 // tempo (ms) de espera apos fechamento da tampa
-unsigned long tempo_espera_tampa = 6000;
+unsigned long tempo_espera_tampa = 10000;
 
 //// VARIAVEIS ////
 // Configuracao inicial em "resetConfig"
@@ -78,6 +78,7 @@ int estado_atual;
 unsigned long ultima_troca_estado;
 unsigned long ultimo_tempo_tampa;
 unsigned long ultima_alteracao_entrada;
+unsigned long tempo_previo_ultima_troca_estado;
 bool eh_pre_enxague;
 bool tampa_estava_aberta;
 bool avaliando_entrada;
@@ -88,7 +89,7 @@ void setup()
 {
   #ifdef TINKERCAD_MODE
     // reduzimos os tempos pra ficar viavel a simulacao
-    tempo_dispenser = 2000;
+    tempo_dispenser = 4000;
     tempo_espera_estado = 250;
     tempo_minimo_entrada = 250;
     tempo_espera_tampa = 1000;
@@ -153,6 +154,7 @@ void loop() {
     ultimo_tempo_tampa = millis();
     if ( ! tampa_estava_aberta ) {
       tampa_estava_aberta = true;
+      pausa_tempo_ultima_troca_estado(true);
       salva_e_inibe_saidas();
     }
     return;
@@ -160,9 +162,8 @@ void loop() {
   else if ( tampa_estava_aberta ) {
     if ( millis() - tempo_espera_tampa >= ultimo_tempo_tampa ) {
       tampa_estava_aberta = false;
+      pausa_tempo_ultima_troca_estado(false);
       restaura_saidas();
-      // Reinicia tempo de dispenser (E2/E7)
-      ultima_troca_estado = millis();
     }
     return;
   }
@@ -330,6 +331,13 @@ void troca_estado(int novo_estado) {
 }
 unsigned long tempo_ultima_troca_estado() {
   return millis() - ultima_troca_estado;
+}
+void pausa_tempo_ultima_troca_estado(bool enable) {
+  if (enable) {
+    tempo_previo_ultima_troca_estado = tempo_ultima_troca_estado();
+  } else {
+    ultima_troca_estado = millis() - tempo_previo_ultima_troca_estado;
+  }
 }
 bool esperando_tempo_minimo_entrada() {
   if (!avaliando_entrada) {
